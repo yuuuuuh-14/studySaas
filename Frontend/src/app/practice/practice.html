@@ -1,0 +1,24 @@
+<div class="page-container">
+    <header class="page-header">
+        <h1 class="title">Practice Zone</h1>
+        <p class="subtitle">Test live interactions between Angular, FastAPI, and Supabase.</p>
+    </header>
+
+    <div class="status-container glass-panel">
+        <h2>System Health Check</h2>
+        <div class="endpoint-status">
+            <div class="status-indicator" [class.online]="backendStatus === 'Online'"
+                [class.loading]="backendStatus === 'Checking...'" [class.error]="backendStatus === 'Offline'"></div>
+            <span class="status-text">Backend API (FastAPI): <strong>{{ backendStatus }}</strong></span>
+        </div>
+
+        <button class="action-btn" (click)="checkHealth()" [disabled]="isLoading">
+            {{ isLoading ? 'Checking...' : 'Check Connection' }}
+        </button>
+    </div>
+
+    <div class="data-container glass-panel animate-fade-in" *ngIf="healthData">
+        <h3>API Response:</h3>
+        <pre class="json-display">{{ healthData | json }}</pre>
+    </div>
+</div>

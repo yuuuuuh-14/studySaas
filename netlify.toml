@@ -1,0 +1,22 @@
+[build]
+  command = "yarn --cwd Frontend run build"
+  publish = "Frontend/dist/frontend/browser"
+
+[functions]
+  directory = "netlify/functions"
+
+[dev]
+  command = "yarn --cwd Frontend run start"
+  port = 8888
+  targetPort = 4200
+  publish = "Frontend/dist/frontend/browser"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
