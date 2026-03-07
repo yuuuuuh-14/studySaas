@@ -1,6 +1,6 @@
 [build]
   command = "yarn --cwd Frontend run build"
-  publish = "Frontend/dist/frontend/browser"
+  publish = "Frontend/dist"
 
 [functions]
   directory = "netlify/functions"
