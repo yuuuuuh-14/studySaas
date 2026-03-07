@@ -1,31 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { LanguageService } from '../language.service';
 
 @Component({
   selector: 'app-workbook',
   template: `
     <div class="page-container animate-fade-in">
       <header class="page-header">
-        <h1 class="title">Learning Workbook</h1>
-        <p class="subtitle">Mastering Angular, FastAPI, and Supabase integration.</p>
+        <h1 class="title">{{ lang.translate('workbook.title') }}</h1>
+        <p class="subtitle">{{ lang.translate('workbook.subtitle') }}</p>
       </header>
 
       <div class="cards-grid">
         <div class="info-card glass-panel interactive-card">
           <div class="card-icon">🅰️</div>
           <h3>Angular Frontend</h3>
-          <p>Modern component-based UI framework for building robust applications. Learn about modules, services, and RxJS.</p>
+          <p>{{ lang.currentLang === 'Kor' ? '견고한 애플리케이션 구축을 위한 현대적인 컴포넌트 기반 UI 프레임워크입니다. 모듈, 서비스, RxJS에 대해 알아봅니다.' : 'Modern component-based UI framework for building robust applications. Learn about modules, services, and RxJS.' }}</p>
         </div>
 
         <div class="info-card glass-panel interactive-card">
           <div class="card-icon">⚡</div>
           <h3>FastAPI Backend</h3>
-          <p>High performance Python web framework. Explore asynchronous endpoints, automatic docs (Redoc), and serverless execution.</p>
+          <p>{{ lang.currentLang === 'Kor' ? '고성능 파이썬 웹 프레임워크입니다. 비동기 엔드포인트, 자동 문서화(Redoc), 서버리스 실행에 대해 살펴봅니다.' : 'High performance Python web framework. Explore asynchronous endpoints, automatic docs (Redoc), and serverless execution.' }}</p>
         </div>
 
         <div class="info-card glass-panel interactive-card">
           <div class="card-icon">🗄️</div>
           <h3>Supabase</h3>
-          <p>Open source Firebase alternative. Manage your database, authentication, and edge functions natively using PostgreSQL.</p>
+          <p>{{ lang.currentLang === 'Kor' ? '오픈 소스 Firebase 대안입니다. PostgreSQL을 사용하여 데이터베이스, 인증, 엣지 함수를 네이티브하게 관리합니다.' : 'Open source Firebase alternative. Manage your database, authentication, and edge functions natively using PostgreSQL.' }}</p>
         </div>
       </div>
 
@@ -78,4 +79,7 @@ import { Component } from '@angular/core';
     .connector { color: var(--text-muted); font-weight: bold; }
   `]
 })
-export class WorkbookComponent {}
+export class WorkbookComponent {
+  public lang = inject(LanguageService);
+}
+

@@ -1,13 +1,14 @@
 :root {
-  --primary: #4F46E5;
-  --primary-hover: #4338CA;
-  --bg-dark: #0F172A;
+  --primary: #6366F1; /* More vibrant Indigo */
+  --primary-hover: #4F46E5;
+  --bg-dark: #020617; /* Deeper black-slate */
   --text-main: #F8FAFC;
-  --text-muted: #94A3B8;
-  --border-color: rgba(255, 255, 1px, 0.1);
-  --glass-bg: rgba(30, 41, 59, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  --text-muted: #64748B; /* Darker muted text for better hierarchy */
+  --border-color: rgba(255, 255, 255, 0.05);
+  --glass-bg: rgba(15, 23, 42, 0.8); /* Darker glass */
+  --glass-border: rgba(255, 255, 255, 0.08);
 }
+
 
 * {
   margin: 0;
@@ -18,9 +19,10 @@
 body {
   background: var(--bg-dark);
   color: var(--text-main);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Outfit', sans-serif;
   line-height: 1.6;
 }
+
 
 .glass-panel {
   background: var(--glass-bg);

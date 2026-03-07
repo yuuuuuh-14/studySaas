@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { LanguageService } from '../language.service';
 import axios from 'axios';
 
 @Component({
@@ -6,12 +7,12 @@ import axios from 'axios';
   template: `
     <div class="page-container animate-fade-in">
       <header class="page-header">
-        <h1 class="title">Practice Zone</h1>
-        <p class="subtitle">Test live interactions between Angular, FastAPI, and Supabase.</p>
+        <h1 class="title">{{ lang.translate('practice.title') }}</h1>
+        <p class="subtitle">{{ lang.translate('practice.subtitle') }}</p>
       </header>
 
       <div class="status-container glass-panel">
-        <h2>System Health Check</h2>
+        <h2>{{ lang.translate('system.health') }}</h2>
         <div class="endpoint-status">
           <div class="status-indicator" [ngClass]="{
             'online': backendStatus === 'Online',
@@ -19,7 +20,7 @@ import axios from 'axios';
             'error': backendStatus === 'Offline'
           }"></div>
           <span class="status-text">
-            Backend API (FastAPI): <strong>{{ backendStatus }}</strong>
+            Backend API (FastAPI): <strong>{{ backendStatus === 'Online' ? lang.translate('system.online') : backendStatus === 'Checking...' ? lang.translate('system.checking') : lang.translate('system.offline') }}</strong>
           </span>
         </div>
 
@@ -28,7 +29,7 @@ import axios from 'axios';
           (click)="checkHealth()"
           [disabled]="isLoading"
         >
-          {{ isLoading ? 'Checking...' : 'Check Connection' }}
+          {{ isLoading ? lang.translate('system.checking') : lang.translate('system.check') }}
         </button>
       </div>
 
@@ -75,6 +76,7 @@ import axios from 'axios';
       color: white; border: none; padding: 1rem 2rem; font-size: 1.1rem;
       font-weight: 600; border-radius: 8px; cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
+      font-family: inherit;
     }
     .action-btn:hover:not([disabled]) { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4); }
     .action-btn[disabled] { opacity: 0.7; cursor: not-allowed; filter: grayscale(0.5); }
@@ -86,6 +88,7 @@ import axios from 'axios';
   `]
 })
 export class PracticeComponent {
+  public lang = inject(LanguageService);
   backendStatus: string = 'Offline';
   isLoading: boolean = false;
   healthData: any = null;
@@ -107,3 +110,4 @@ export class PracticeComponent {
     }
   }
 }
+
