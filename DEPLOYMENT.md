@@ -1,83 +1,51 @@
-# LetsStudySaaS 배포 가이드
+# LetsStudySaaS 배포 & 연동 가이드
 
-이 문서는 LetsStudySaaS 프로젝트를 Netlify에 배포하는 방법을 설명합니다.
+이 가이드는 GitHub 연결, Netlify 배포, 그리고 Supabase 연동을 한 번에 완료하기 위한 단계별 지침입니다.
 
-## 1. 전제 조건
-- [Netlify 계정](https://www.netlify.com/)이 필요합니다.
-- [GitHub](https://github.com/) 저장소에 코드가 푸시되어 있어야 합니다.
-- [Supabase](https://supabase.com/) 프로젝트가 생성되어 있어야 하며, API URL과 Key가 필요합니다.
+## 1. GitHub 저장소 생성 및 코드 푸시
 
-## 2. 환경 변수 설정
-Netlify 배포 시 백엔드가 Supabase와 통신하기 위해 환경 변수를 설정해야 합니다.
+현재 `master` 브랜치에 코드가 있습니다. 이를 GitHub에 올립니다.
 
-1. Netlify Dashboard 로그인
-2. **Site configuration** > **Environment variables** 메뉴로 이동
-3. 다음 변수들을 추가합니다:
-   - `SUPABASE_URL`: Supabase 프로젝트의 API URL
-   - `SUPABASE_KEY`: Supabase 프로젝트의 anon key 또는 service_role key
+1. **GitHub 로그인** 후 [새 저장소(New repository)](https://github.com/new)를 생성합니다.
+2. 저장소 이름을 정하고(예: `studySaas`), **Create repository**를 누릅니다.
+3. 로컬 프로젝트 루트(`studySaas/`)에서 다음 명령어를 실행합니다:
+   ```powershell
+   git remote add origin https://github.com/사용자이름/저장소이름.git
+   git push -u origin master
+   ```
 
-## 3. Netlify 설정 파일 확인 (`netlify.toml`)
-프로젝트 루트의 `netlify.toml` 파일이 다음과 같이 설정되어 있는지 확인하세요. (React + FastAPI Monorepo 구조용)
+## 2. Netlify에 사이트 연결
 
-```toml
-[build]
-  command = "yarn --cwd Frontend run build"
-  publish = "Frontend/dist"
+1. **Netlify Dashboard**에서 **Add new site** > **Import an existing project**를 선택합니다.
+2. **GitHub**을 선택하고 방금 만든 저장소를 연결합니다.
+3. **Site configuration**:
+   - **Branch to deploy**: `master`
+   - **Build command**: `cd Frontend && yarn install && yarn build`
+   - **Publish directory**: `Frontend/dist`
+4. **Deploy site**를 누릅니다. (아직 환경 변수가 없어 API는 작동하지 않지만 빌드는 시작됩니다.)
 
-[functions]
-  directory = "netlify/functions"
+## 3. Supabase 연동 및 환경 변수 설정
 
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/api/:splat"
-  status = 200
+가장 중요한 단계입니다. Netlify가 Supabase와 통신할 수 있게 설정해야 합니다.
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-```
+1. **Supabase Dashboard**에서 프로젝트 선택 후 **Project Settings** > **API**로 이동합니다.
+2. 다음 두 가지 값을 복사합니다:
+   - `Project URL`
+   - `anon public` (또는 `service_role key`)
+3. **Netlify Dashboard**에서 방금 만든 사이트 선택 후:
+   - **Site configuration** > **Environment variables** 메뉴 클릭
+   - **Add a variable** > **Import from .env** 또는 개별 추가:
+     - `SUPABASE_URL`: (복사한 Project URL)
+     - `SUPABASE_KEY`: (복사한 API Key)
+4. 설정을 저장한 후, **Deploys** 메뉴에서 **Trigger deploy** > **Clear cache and deploy site**를 눌러 다시 빌드합니다.
 
-> [!IMPORTANT]
-> 현재 `netlify.toml`의 `publish` 경로가 잘못되어 있을 수 있으니 반드시 `Frontend/dist`로 설정되어 있는지 확인하세요.
+## 4. 최종 확인 및 실행
 
-## 4. 백엔드(Functions) 배포 준비
-Netlify는 `netlify/functions` 디렉토리에 있는 파일을 서버리스 함수로 인식합니다. FastAPI를 연동하기 위해 다음 단계를 거칩니다.
+배포가 완료되면 Netlify가 제공하는 URL(예: `https://xxxx.netlify.app`)로 접속합니다.
 
-1. 루트 디렉토리에 `netlify/functions` 폴더가 있는지 확인합니다.
-2. `netlify/functions/api.py` 파일을 생성하고 아래 내용을 작성합니다. (기존 `Backend/main.py`의 핸들러를 연결하는 역할)
+- **프론트엔드**: "Study SaaS - Angular Version" 화면이 보입니다.
+- **백엔드**: `https://xxxx.netlify.app/api/health`로 접속했을 때 `{"status": "ok"}`가 나오면 성공입니다.
 
-```python
-import sys
-import os
+> [!TIP]
+> 이제 GitHub의 `master` 브랜치에 코드를 푸시할 때마다 Netlify가 자동으로 다시 배포합니다.
 
-# Backend 디렉토리를 path에 추가하여 모듈을 찾을 수 있게 함
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../Backend"))
-
-from main import handler
-```
-
-3. 루트 디렉토리에도 `requirements.txt`가 있거나, Netlify가 `Backend/requirements.txt`를 읽을 수 있도록 설정해야 합니다. (가장 쉬운 방법은 루트에 `requirements.txt`를 두는 것입니다.)
-
-## 5. 배포 실행
-
-### 방법 A: GitHub 연동 (권장)
-GitHub 저장소를 Netlify 사이트에 연결하면, `main` 브랜치에 코드를 푸시할 때마다 자동으로 빌드 및 배포가 진행됩니다.
-
-### 방법 B: Netlify CLI 사용 (수동 배포)
-로컬에서 직접 배포하려면 아래 명령어를 사용합니다.
-```powershell
-# 1. Netlify CLI 설치 (이미 있다면 생략)
-npm install -g netlify-cli
-
-# 2. Netlify 로그인
-netlify login
-
-# 3. 배포 (처음 실행 시 사이트 연결 단계 진행)
-netlify deploy --build
-```
-*배포 후 결과가 만족스러우면 `--prod` 플래그를 붙여 프로덕션에 반영합니다.*
-
-## 6. 문제 해결 (Troubleshooting)
-- **API 호출 시 404 에러**: `netlify.toml`의 리다이렉트 설정과 함수의 파일명(`api.py`)이 일치하는지 확인하세요.
-- **Python 의존성 에러**: Netlify 빌드 로그에서 `pip install` 과정을 확인하세요. 필요한 라이브러리(`fastapi`, `mangum`, `supabase` 등)가 `requirements.txt`에 모두 포함되어 있어야 합니다.

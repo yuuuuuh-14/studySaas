@@ -4,19 +4,19 @@
 이 프로젝트는 웹 서비스 배포 역량을 강화하기 위해 프론트엔드와 백엔드를 연동하고 Netlify에 배포하는 운영 가능한 서비스를 구축하는 것을 목표로 합니다.
 
 ## 기술 스택
-- **Frontend**: React
+- **Frontend**: Angular, Webpack
 - **Backend**: Python (FastAPI), Redoc
 - **Database**: Supabase
 - **Deployment**: Netlify (Frontend 정적 호스팅, Backend는 Netlify Functions를 통한 Serverless 배포)
 - **VCS**: Github
 
 ## 기능 명세
-- React 학습을 위한 Workbook 및 실습 화면 제공
+- Angular 및 Webpack 학습을 위한 Workbook 및 실습 화면 제공
 - FastAPI 및 Redoc 학습을 위한 Workbook 및 실습 제공
 
 ## 프로젝트 구조
 하나의 Github Repository에서 프론트엔드와 백엔드를 모두 관리하는 Monorepo(모노레포) 형태입니다.
-- `Frontend/`: React + Webpack 기반 UI
+- `Frontend/`: Angular + Webpack 기반 UI
 - `Backend/`: Python FastAPI 애플리케이션 (Netlify Functions 용으로 설계됨)
 
 ## 배포 전략

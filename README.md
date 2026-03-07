@@ -4,7 +4,7 @@
 Supabase를 데이터베이스로 사용하며 Netlify에 Monorepo 형태로 배포됩니다.
 
 ## 디렉토리 구조
-- `Frontend/`: React + Webpack 애플리케이션
+- `Frontend/`: Angular + Webpack 애플리케이션
 - `Backend/`: Python FastAPI 애플리케이션 (Netlify Functions 용으로 설계됨)
 
 ## 로컬 개발 환경 실행 방법 (Windows 기준)
@@ -29,14 +29,14 @@ python -m venv venv
 pip install -r requirements.txt
 ```
 
-### 2. 프론트엔드 설정 (React)
+### 2. 프론트엔드 설정 (Angular)
 ```powershell
 cd Frontend
 yarn install
 ```
 
 ### 3. 전체 로컬 실행 (Netlify Dev 방식)
-프로젝트 루트 디렉토리(`LetsStudySaaS`)에서 아래 명령어를 실행하면 React 앱과 Python 백엔드가 동시에 실행됩니다.
+프로젝트 루트 디렉토리(`LetsStudySaaS`)에서 아래 명령어를 실행하면 Angular 앱과 Python 백엔드가 동시에 실행됩니다.
 ```powershell
 netlify dev
 ```

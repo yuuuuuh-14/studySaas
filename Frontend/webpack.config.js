@@ -3,25 +3,44 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-    entry: './src/index.tsx',
+    entry: './src/main.ts',
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js',
         publicPath: '/',
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.jsx'],
+        extensions: ['.ts', '.js'],
     },
     module: {
         rules: [
             {
-                test: /\.(ts|tsx)$/,
-                exclude: /node_modules/,
-                use: 'babel-loader',
+                test: /\.ts$/,
+                use: [
+                    {
+                        loader: 'ts-loader',
+                        options: {
+                            transpileOnly: true
+                        }
+                    },
+                    'angular2-template-loader'
+                ],
+                exclude: /node_modules/
+            },
+            {
+                test: /\.(html|css)$/,
+                loader: 'raw-loader',
+                exclude: /\.async\.(html|css)$/
             },
             {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader'],
+                include: path.resolve(__dirname, 'src/app'),
+                use: 'raw-loader'
+            },
+            {
+                test: /\.css$/,
+                exclude: path.resolve(__dirname, 'src/app'),
+                use: ['style-loader', 'css-loader']
             },
             {
                 test: /\.(png|svg|jpg|jpeg|gif)$/i,
@@ -50,3 +69,4 @@ module.exports = {
         ],
     },
 };
+
