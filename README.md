@@ -1,6 +1,6 @@
 # LetsStudySaaS Project
 
-이 프로젝트는 React 프론트엔드와 Python FastAPI 백엔드로 구성된 학습용 SaaS 플랫폼입니다.
+이 프로젝트는 Angular 프론트엔드와 Python FastAPI 백엔드로 구성된 학습용 SaaS 플랫폼입니다.
 Supabase를 데이터베이스로 사용하며 Netlify에 Monorepo 형태로 배포됩니다.
 
 ## 디렉토리 구조
