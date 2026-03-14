@@ -1,9 +1,11 @@
 {
   "version": 2,
+  "name": "lets-study-frontend",
+  "cleanUrls": true,
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://<your-backend-project>.vercel.app/api/$1"
+      "destination": "https://your-backend-url.vercel.app/api/$1"
     },
     {
       "source": "/(.*)",

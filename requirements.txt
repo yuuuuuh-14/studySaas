@@ -1,7 +1,0 @@
-# This file is for Netlify to recognize dependencies for functions in a monorepo
-fastapi
-mangum
-supabase
-httpx
-pydantic
-pydantic-settings
