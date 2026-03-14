@@ -47,3 +47,4 @@ netlify dev
 
 > [!TIP]
 > PowerShell에서 스크립트 실행 권한 문제가 발생할 경우, 관리자 권한으로 PowerShell을 열고 `Set-ExecutionPolicy RemoteSigned -Scope CurrentUser` 명령어를 실행하세요.
+
