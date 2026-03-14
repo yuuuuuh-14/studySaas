@@ -1,22 +1,8 @@
-# General
-.DS_Store
-Thumbs.db
-
-# IDEs
-.vscode/
-.idea/
-*.swp
-*.swo
-*.suo
-*.user
-
 # Backend (Python)
 __pycache__/
 *.py[cod]
 *$py.class
 venv/
-env/
-.env
 .venv/
 .pytest_cache/
 htmlcov/
