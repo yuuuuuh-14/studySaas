@@ -56,6 +56,7 @@ yarn-error.log*
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+!.yarnrc.yml
 
 # OS generated files
 .DS_Store

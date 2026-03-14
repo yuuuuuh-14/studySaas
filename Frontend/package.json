@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "1.0.0",
   "private": true,
-  "packageManager": "yarn@1.22.22",
+  "packageManager": "yarn@4.13.0",
   "scripts": {
     "start": "webpack serve --mode development --open",
     "build": "webpack --mode production",
@@ -38,4 +38,3 @@
     "webpack-dev-server": "^5.0.4"
   }
 }
-
