@@ -32,7 +32,7 @@ import { LanguageService, Language } from './language.service';
       </main>
 
       <footer class="main-footer">
-        <p>© 2026 LetsStudySaaS. Built with Angular & FastAPI.</p>
+        <p>© 2026 Yuha Han. Built with Angular & FastAPI.</p>
       </footer>
     </div>
   `,
