@@ -1,63 +1,42 @@
-# 🌐 LetsStudySaaS 배포 가이드
+# 🌐 LetsStudySaaS 따로 배포 가이드 (Vercel)
 
-이 가이드는 GitHub 관리, Netlify 배포, 그리고 Supabase 연동을 성공적으로 완료하기 위한 상세 지침입니다.
-
----
-
-## 1️⃣ GitHub 저장소 설정
-
-코드를 클라우드에 안전하게 보관하고 Netlify와 연동하기 위해 GitHub에 푸시합니다.
-
-1. **GitHub 로그인** 후 [새 저장소(New repository)](https://github.com/new)를 생성합니다.
-2. 저장소 이름(예: `LetsStudySaaS`)을 입력하고 **Create repository**를 클릭합니다.
-3. 로컬 프로젝트 루트에서 다음 명령어를 실행합니다:
-   ```powershell
-   git remote add origin https://github.com/사용자이름/저장소이름.git
-   git push -u origin master
-   ```
+프론트엔드와 백엔드를 각각 별도의 Vercel 프로젝트로 배포하는 설정입니다.
 
 ---
 
-## 2️⃣ Netlify 사이트 배포
+## 🔵 1. 프론트엔드 배포 (Frontend)
 
-Netlify를 통해 프론트엔드 호스팅과 서버리스 백엔드를 구축합니다.
-
-1. **[Netlify Dashboard](https://app.netlify.com/)** 접속 후 **Add new site** > **Import an existing project**를 선택합니다.
-2. **GitHub**을 선택하고 방금 만든 저장소를 인증 및 연결합니다.
-3. **Site configuration** 설정:
-   - **Branch to deploy**: `master`
-   - **Build command**: `cd Frontend && yarn install && yarn build`
-   - **Publish directory**: `Frontend/dist`
-4. **Deploy site**를 클릭합니다. (API는 환경 변수 설정 후 작동합니다.)
-
----
-
-## 3️⃣ Supabase 연동 및 환경 변수 설정
-
-가장 중요한 단계입니다. 백엔드가 데이터베이스와 안전하게 통신할 수 있도록 설정합니다.
-
-1. **[Supabase Dashboard](https://app.supabase.com/)**에서 프로젝트 선택 후 **Project Settings** > **API**로 이동합니다.
-2. 다음 두 값을 안전한 곳에 복사합니다:
-   - `Project URL`
-   - `anon public` (기본 API 키)
-3. **Netlify Dashboard** > **Site configuration** > **Environment variables** 메뉴로 이동합니다.
-4. **Add a variable**를 클릭하여 다음 변수들을 추가합니다:
-   - `SUPABASE_URL`: (복사한 Project URL)
-   - `SUPABASE_KEY`: (복사한 API Key)
-5. **Deploys** 메뉴에서 **Trigger deploy** > **Clear cache and deploy site**를 클릭하여 설정을 적용합니다.
+1.  Vercel에서 **New Project** 생성 -> 저장소 선택.
+2.  **Root Directory**: `Frontend`로 설정 (Edit 버튼 클릭 후 선택).
+3.  **Build Settings**:
+    *   Framework Preset: `Other` (또는 Angular 감지됨)
+    *   Build Command: `yarn install && yarn build`
+    *   Output Directory: `dist`
+4.  **[중요] API 연결**:
+    *   `Frontend/vercel.json` 파일 내의 `destination` 주소를 실제 배포된 **백엔드 Vercel URL**로 수정하여 푸시하세요. 그래야 프론트엔드에서 백엔드로 API 호출이 전달됩니다.
 
 ---
 
-## 4️⃣ 서비스 정상 작동 확인
+## 🟢 2. 백엔드 배포 (Backend)
 
-배포된 Netlify URL로 접속하여 다음 사항을 확인합니다.
+1.  Vercel에서 **또 다른 New Project** 생성 -> 동일한 저장소 선택.
+2.  **Root Directory**: `./` (기본값)로 설정.
+3.  **Build Settings**:
+    *   Build Command: `exit 0` (빌드 생략)
+    *   Output Directory: (비워둠)
+4.  **Environment Variables**:
+    *   `SUPABASE_URL`: (Supabase 주소)
+    *   `SUPABASE_KEY`: (Supabase API 키)
 
-- **Frontend**: 웹 화면이 정상적으로 로드되는지 확인합니다.
-- **Backend API**: `https://사이트이름.netlify.app/api/health` 접속 시 `{"status": "ok"}`가 반환되는지 확인합니다.
+---
 
-> [!IMPORTANT]
-> **보안 주의사항**: `SUPABASE_KEY`는 절대 코드에 직접 하드코딩하지 마십시오. 반드시 Netlify 환경 변수 기능을 이용해야 합니다.
+## ⚠️ 에러 해결 (cd Frontend 오류)
+만약 빌드 중 `cd: Frontend: No such file or directory` 에러가 발생한다면, Vercel 설정에서 **Root Directory**가 이미 `Frontend`로 설정되어 있는데 **Build Command**에 또 `cd Frontend`가 포함되어 있기 때문입니다. 
 
-> [!TIP]
-> 이제 `main` 브랜치에 코드를 `git push` 할 때마다 Netlify가 자동으로 신규 버전을 빌드 및 배포합니다.
+**해결**: 설정의 Build Command를 `yarn install && yarn build`로 수정하세요.
 
+---
+
+## 4️⃣ 정상 작동 확인
+- **백엔드**: `https://backend-url.vercel.app/api/health` -> `{"status": "ok"}`
+- **프론트엔드**: `https://frontend-url.vercel.app` 접속 및 기능 확인.
