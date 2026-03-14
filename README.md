@@ -89,3 +89,9 @@ netlify dev
 ## 📄 라이선스
 
 이 프로젝트는 **GNU Affero General Public License v3.0**에 따라 라이선스가 부여됩니다. 자세한 내용은 [LICENSE](file:///c:/Users/turbo/Documents/yh/LetsStudySaaS/LICENSE) 파일을 확인하세요.
+
+---
+
+### 상용 라이선스
+
+이 프로젝트는 기본적으로 **AGPL v3.0** 라이선스를 부여하고 있습니다. 이 라이선스를 사용하면, 이 프로젝트를 사용한 전체 프로젝트의 소스를 공개해야 합니다. 상용 라이선스 구매는 협상을 통해 진행하고 있으며 자세한 내용은 아래 이메일로 문의 바랍니다. youryuha14@icloud.com
