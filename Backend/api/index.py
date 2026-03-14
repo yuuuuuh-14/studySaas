@@ -1,18 +1,20 @@
 import sys
 import os
 
-# 현재 파일(Backend/api/index.py)의 부모 디렉토리(Backend)를 path에 추가
-current_dir = os.path.dirname(__file__)
-parent_dir = os.path.abspath(os.path.join(current_dir, ".."))
-sys.path.append(parent_dir)
+# Backend 폴더를 Python 경로에 추가
+# Vercel Root Directory가 'Backend'로 설정되어 있으면 현재 위치는 Backend/api 임
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if base_dir not in sys.path:
+    sys.path.append(base_dir)
 
 try:
+    # Backend/main.py 에서 app 인스턴스를 가져옴
     from main import app
 except ImportError as e:
-    print(f"Parent directory: {parent_dir}")
+    print(f"Base Directory: {base_dir}")
+    print(f"Current Sys Path: {sys.path}")
     print(f"Import Error: {e}")
     raise
 
-# Vercel ASGI handler
-handler = app
+# Vercel은 'app' 객체를 찾아 ASGI로 실행함
 app = app
