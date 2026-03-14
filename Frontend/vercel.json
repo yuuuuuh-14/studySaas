@@ -5,7 +5,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://your-backend-url.vercel.app/api/$1"
+      "destination": "https://study-saas-yuuuuuh-14-q8gz.vercel.app/api/$1"
     },
     {
       "source": "/(.*)",
