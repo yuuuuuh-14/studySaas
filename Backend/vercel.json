@@ -1,12 +1,5 @@
 {
   "version": 2,
-  "name": "lets-study-backend",
-  "builds": [
-    {
-      "src": "api/index.py",
-      "use": "@vercel/python"
-    }
-  ],
   "rewrites": [
     {
       "source": "/api/(.*)",

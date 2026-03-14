@@ -1,20 +1,37 @@
-import sys
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import os
 
-# Backend 폴더를 Python 경로에 추가
-# Vercel Root Directory가 'Backend'로 설정되어 있으면 현재 위치는 Backend/api 임
-base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if base_dir not in sys.path:
-    sys.path.append(base_dir)
+# 백엔드 루트에서 모듈을 찾을 수 있도록 설정 (database.py 등 참조용)
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 try:
-    # Backend/main.py 에서 app 인스턴스를 가져옴
-    from main import app
-except ImportError as e:
-    print(f"Base Directory: {base_dir}")
-    print(f"Current Sys Path: {sys.path}")
-    print(f"Import Error: {e}")
-    raise
+    from database import supabase
+except ImportError:
+    supabase = None
 
-# Vercel은 'app' 객체를 찾아 ASGI로 실행함
-app = app
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.get("/api/health")
+def health_check():
+    return {"status": "ok", "message": "Backend is running on Vercel"}
+
+@app.get("/api/{full_path:path}")
+def catch_all(full_path: str):
+    return {"message": f"Path /api/{full_path} received"}
+
+@app.get("/")
+def read_root():
+    return {"message": "LetsStudySaaS API Root"}
+
+# Vercel이 인식할 수 있도록 app 객체 노출
+handler = app
