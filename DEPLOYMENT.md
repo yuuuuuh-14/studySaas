@@ -12,8 +12,9 @@
 3.  **Build Settings**:
     *   Build Command: `yarn install && yarn build`
     *   Output Directory: `dist`
-4.  **API 연결 설정**:
-    *   배포 후 `Frontend/vercel.json`의 `destination` 주소를 실제 백엔드 주소로 수정하여 푸시하면 API가 연결됩니다.
+4.  **API 연결 완료**:
+    *   `Frontend/vercel.json`에 실제 백엔드 주소(`https://study-saas-yuuuuuh-14-q8gz.vercel.app`)가 이미 연결되어 있습니다. 
+    *   추후 백엔드 주소가 바뀌면 이 파일의 `destination` 값만 수정하면 됩니다.
 
 ---
 
